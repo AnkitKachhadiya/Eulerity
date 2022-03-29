@@ -1,1 +1,1 @@
-# eulerity-coding-challenge
+# Eulerity Web Take-Home Challenge
