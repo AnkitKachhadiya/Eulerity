@@ -24,6 +24,7 @@ const API_URL = "http://eulerity-hackathon.appspot.com/pets";
 
 function Pets() {
     const pets = useSelector((state) => state.allPets.filteredPets);
+    const allPets = useSelector((state) => state.allPets.pets);
     const selectedPets = useSelector((state) => state.selectedPets);
 
     const dispatch = useDispatch();
@@ -76,8 +77,35 @@ function Pets() {
         return false;
     }
 
+    function handleSelectAll() {
+        for (const currentPet of allPets) {
+            const petId = `checkbox-${currentPet.url}-${currentPet.title}-${currentPet.description}`;
+
+            if (!isChecked(petId)) {
+                const selectedPet = {
+                    key: petId,
+                    url: currentPet.url,
+                    title: currentPet.title,
+                };
+
+                dispatch(selectPet(selectedPet));
+            }
+        }
+    }
+    function handleUnselectAll() {
+        for (const currentPet of selectedPets) {
+            dispatch(unselectPet(currentPet.key));
+        }
+    }
+
     return (
         <Container>
+            <button type="button" onClick={handleSelectAll}>
+                Select All
+            </button>
+            <button type="button" onClick={handleUnselectAll}>
+                Clear Selection
+            </button>
             <SearchContainer>
                 <label htmlFor="search-pet" aria-label="Search pet"></label>
                 <input
@@ -93,42 +121,39 @@ function Pets() {
             <PetContainer>
                 {pets &&
                     pets.length > 0 &&
-                    pets.map((currentPet, currentIndex) => (
-                        <Card key={currentIndex}>
-                            <label
-                                htmlFor={`checkbox-${currentIndex}-${currentPet.url}`}
-                            >
-                                <Checkbox
-                                    id={`checkbox-${currentIndex}-${currentPet.url}`}
-                                    value={`checkbox-${currentIndex}-${currentPet.url}`}
-                                    data-url={currentPet.url}
-                                    data-title={currentPet.title}
-                                    onChange={handleCheckbox}
-                                    checked={
-                                        isChecked(
-                                            `checkbox-${currentIndex}-${currentPet.url}`
-                                        )
-                                            ? "checked"
-                                            : ""
-                                    }
-                                />
-
-                                <ImageContainer>
-                                    <Image
-                                        src={currentPet.url}
-                                        alt={currentPet.title}
+                    pets.map((currentPet, currentIndex) => {
+                        const petId = `checkbox-${currentPet.url}-${currentPet.title}-${currentPet.description}`;
+                        return (
+                            <Card key={currentIndex}>
+                                <label htmlFor={petId}>
+                                    <Checkbox
+                                        id={petId}
+                                        value={petId}
+                                        data-url={currentPet.url}
+                                        data-title={currentPet.title}
+                                        onChange={handleCheckbox}
+                                        checked={
+                                            isChecked(petId) ? "checked" : ""
+                                        }
                                     />
-                                </ImageContainer>
 
-                                <CardBody>
-                                    <p>
-                                        <b>{currentPet.title}</b>
-                                    </p>
-                                    <p>{currentPet.description}</p>
-                                </CardBody>
-                            </label>
-                        </Card>
-                    ))}
+                                    <ImageContainer>
+                                        <Image
+                                            src={currentPet.url}
+                                            alt={currentPet.title}
+                                        />
+                                    </ImageContainer>
+
+                                    <CardBody>
+                                        <p>
+                                            <b>{currentPet.title}</b>
+                                        </p>
+                                        <p>{currentPet.description}</p>
+                                    </CardBody>
+                                </label>
+                            </Card>
+                        );
+                    })}
             </PetContainer>
         </Container>
     );
