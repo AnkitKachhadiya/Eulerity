@@ -20,6 +20,10 @@ import {
     Checkbox,
 } from "./styles/Card.styled";
 
+import { saveAs } from "file-saver";
+import JSZip from "jszip";
+import JSZipUtils from "jszip-utils";
+
 const API_URL = "http://eulerity-hackathon.appspot.com/pets";
 
 function Pets() {
@@ -98,6 +102,33 @@ function Pets() {
         }
     }
 
+    function handleDownload() {
+        var zip = new JSZip();
+        var zipFilename = "archive.zip";
+
+        selectedPets.forEach(function (currentSelectedPet, index) {
+            zip.file(`${index}.jpeg`, urlToPromise(currentSelectedPet.url), {
+                base64: true,
+            });
+        });
+
+        zip.generateAsync({ type: "blob" }).then(function (content) {
+            saveAs(content, zipFilename);
+        });
+    }
+
+    function urlToPromise(url) {
+        return new Promise(function (resolve, reject) {
+            JSZipUtils.getBinaryContent(url, function (err, data) {
+                if (err) {
+                    reject(err);
+                } else {
+                    resolve(data);
+                }
+            });
+        });
+    }
+
     return (
         <Container>
             <button type="button" onClick={handleSelectAll}>
@@ -105,6 +136,9 @@ function Pets() {
             </button>
             <button type="button" onClick={handleUnselectAll}>
                 Clear Selection
+            </button>
+            <button type="button" onClick={handleDownload}>
+                Download
             </button>
             <SearchContainer>
                 <label htmlFor="search-pet" aria-label="Search pet"></label>
