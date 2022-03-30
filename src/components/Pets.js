@@ -21,22 +21,27 @@ function Pets() {
 
     return (
         <>
-            <h1>Pets</h1>
+            <div>
+                <label htmlFor="search-pet" aria-label="Search Pet"></label>
+                <input type="text" placeholder="Search Pet" id="search-pet" />
+            </div>
 
-            {petList &&
-                petList.length > 0 &&
-                petList.map((currentPet, currentIndex) => (
-                    <div key={currentIndex}>
-                        <img
-                            src={currentPet.url}
-                            alt={currentPet.title}
-                            width="150"
-                            height="150"
-                        />
-                        <p>{currentPet.title}</p>
-                        <p>{currentPet.description}</p>
-                    </div>
-                ))}
+            <div>
+                {petList &&
+                    petList.length > 0 &&
+                    petList.map((currentPet, currentIndex) => (
+                        <div key={currentIndex}>
+                            <img
+                                src={currentPet.url}
+                                alt={currentPet.title}
+                                width="150"
+                                height="150"
+                            />
+                            <p>{currentPet.title}</p>
+                            <p>{currentPet.description}</p>
+                        </div>
+                    ))}
+            </div>
         </>
     );
 }

@@ -1,6 +1,10 @@
 import { createGlobalStyle } from "styled-components";
 
 const GlobalStyles = createGlobalStyle`
+    html {
+        overflow-y: overlay;
+    }
+
     * {
         box-sizing: border-box;
     }
