@@ -9,6 +9,7 @@ const theme = {
         footer: "#003333",
     },
     mobile: "768px",
+    minMobile: "480px",
 };
 
 function App() {

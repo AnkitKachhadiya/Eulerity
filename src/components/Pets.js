@@ -1,6 +1,10 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
-import { Container, PetContainer } from "./styles/Container.styled";
+import {
+    Container,
+    PetContainer,
+    SearchContainer,
+} from "./styles/Container.styled";
 import {
     Card,
     ImageContainer,
@@ -13,12 +17,15 @@ const API_URL = "http://eulerity-hackathon.appspot.com/pets";
 
 function Pets() {
     const [petList, setPetList] = useState();
+    const [urls, setUrls] = useState([]);
+    const [dataList, setDataList] = useState();
 
     useEffect(() => {
         async function fetchData() {
             try {
                 const { data } = await axios.get(API_URL);
                 setPetList(data);
+                setDataList(data);
             } catch (error) {
                 console.log(error);
             }
@@ -28,17 +35,44 @@ function Pets() {
     }, []);
 
     function handleCheckbox(event) {
-        console.log(event);
-        console.log(event.target.checked);
-        console.log(event.target.value);
+        urls.push(event.target.value);
+
+        setUrls(urls);
+        console.log(urls);
+    }
+
+    function handleSearch(event) {
+        const query = event.target.value;
+
+        const searchData = dataList.filter((pet) => {
+            if (query.length < 1) {
+                return pet;
+            }
+
+            if (
+                pet.title.toLowerCase().includes(query.toLowerCase()) ||
+                pet.description.toLowerCase().includes(query.toLowerCase())
+            ) {
+                return pet;
+            }
+
+            return false;
+        });
+
+        setPetList(searchData);
     }
 
     return (
         <Container>
-            <div>
-                <label htmlFor="search-pet" aria-label="Search Pet"></label>
-                <input type="text" placeholder="Search Pet" id="search-pet" />
-            </div>
+            <SearchContainer>
+                <label htmlFor="search-pet" aria-label="Search pet"></label>
+                <input
+                    type="text"
+                    placeholder="Search"
+                    id="search-pet"
+                    onChange={handleSearch}
+                />
+            </SearchContainer>
 
             <PetContainer>
                 {petList &&
