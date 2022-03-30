@@ -4,6 +4,7 @@ import GlobalStyles from "./components/styles/Global";
 
 const theme = {
     colors: {
+        primary: "#1c49c2",
         header: "#1c49c2",
         body: "#f9f9f9",
         footer: "#003333",

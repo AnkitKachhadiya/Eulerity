@@ -15,8 +15,9 @@ function NavBar() {
                 </Nav>
             </StyledHeader>
             <Routes>
-                <Route path="/" element={<Pets />} />
+                <Route exact path="/" element={<Pets />} />
                 <Route path="/about" element={<About />} />
+                <Route path="*">404 Not Found!</Route>
             </Routes>
         </BrowserRouter>
     );

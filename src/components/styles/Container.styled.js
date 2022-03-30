@@ -42,6 +42,15 @@ export const SearchContainer = styled.div`
 
     input[type="text"]:focus {
         outline: none;
-        border: 2px solid ${({ theme }) => theme.colors.header};
+        border: 2px solid ${({ theme }) => theme.colors.primary};
     }
+`;
+
+export const ButtonContainer = styled.div`
+    z-index: 1;
+    display: flex;
+    flex-direction: column;
+    position: fixed;
+    left: 10px;
+    top: 15rem;
 `;

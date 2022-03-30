@@ -11,6 +11,7 @@ import {
     Container,
     PetContainer,
     SearchContainer,
+    ButtonContainer,
 } from "./styles/Container.styled";
 import {
     Card,
@@ -19,6 +20,7 @@ import {
     CardBody,
     Checkbox,
 } from "./styles/Card.styled";
+import { IconButton } from "./styles/IconButton.styled";
 
 import { saveAs } from "file-saver";
 import JSZip from "jszip";
@@ -129,17 +131,36 @@ function Pets() {
         });
     }
 
+    if (!pets || pets.length < 1) {
+        return (
+            <div>
+                <h1>Loading...</h1>
+            </div>
+        );
+    }
+
     return (
         <Container>
-            <button type="button" onClick={handleSelectAll}>
-                Select All
-            </button>
-            <button type="button" onClick={handleUnselectAll}>
-                Clear Selection
-            </button>
-            <button type="button" onClick={handleDownload}>
-                Download
-            </button>
+            <ButtonContainer>
+                <IconButton bg="#009688">
+                    <span>
+                        <img src="/select-all.png" alt="Select All" />
+                    </span>
+                    <span>Select All</span>
+                </IconButton>
+                <IconButton bg="#ff1744">
+                    <span>
+                        <img src="/clear-selection.png" alt="Clear Selection" />
+                    </span>
+                    <span>Clear Selection</span>
+                </IconButton>
+                <IconButton>
+                    <span>
+                        <img src="/download.png" alt="Download" />
+                    </span>
+                    <span>Download</span>
+                </IconButton>
+            </ButtonContainer>
             <SearchContainer>
                 <label htmlFor="search-pet" aria-label="Search pet"></label>
                 <input
