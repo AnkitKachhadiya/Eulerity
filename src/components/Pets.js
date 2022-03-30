@@ -1,4 +1,6 @@
 import { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { setPets, searchPets } from "../redux/actions/petActions";
 import axios from "axios";
 import {
     Container,
@@ -16,50 +18,31 @@ import {
 const API_URL = "http://eulerity-hackathon.appspot.com/pets";
 
 function Pets() {
-    const [petList, setPetList] = useState();
     const [urls, setUrls] = useState([]);
     const [dataList, setDataList] = useState();
+
+    const pets = useSelector((state) => state.allPets.filteredPets);
+    const dispatch = useDispatch();
 
     useEffect(() => {
         async function fetchData() {
             try {
                 const { data } = await axios.get(API_URL);
-                setPetList(data);
                 setDataList(data);
+                dispatch(setPets(data));
             } catch (error) {
                 console.log(error);
             }
         }
 
         fetchData();
-    }, []);
+    }, [dispatch]);
 
     function handleCheckbox(event) {
         urls.push(event.target.value);
 
         setUrls(urls);
         console.log(urls);
-    }
-
-    function handleSearch(event) {
-        const query = event.target.value;
-
-        const searchData = dataList.filter((pet) => {
-            if (query.length < 1) {
-                return pet;
-            }
-
-            if (
-                pet.title.toLowerCase().includes(query.toLowerCase()) ||
-                pet.description.toLowerCase().includes(query.toLowerCase())
-            ) {
-                return pet;
-            }
-
-            return false;
-        });
-
-        setPetList(searchData);
     }
 
     return (
@@ -70,14 +53,16 @@ function Pets() {
                     type="text"
                     placeholder="Search"
                     id="search-pet"
-                    onChange={handleSearch}
+                    onChange={(event) =>
+                        dispatch(searchPets(event.target.value))
+                    }
                 />
             </SearchContainer>
 
             <PetContainer>
-                {petList &&
-                    petList.length > 0 &&
-                    petList.map((currentPet, currentIndex) => (
+                {pets &&
+                    pets.length > 0 &&
+                    pets.map((currentPet, currentIndex) => (
                         <Card key={currentIndex}>
                             <label htmlFor={`checkbox-${currentIndex}`}>
                                 <Checkbox
