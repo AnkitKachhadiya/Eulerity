@@ -1,6 +1,11 @@
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { setPets, searchPets } from "../redux/actions/petActions";
+import {
+    setPets,
+    searchPets,
+    selectPet,
+    unselectPet,
+} from "../redux/actions/petActions";
 import axios from "axios";
 import {
     Container,
@@ -18,19 +23,18 @@ import {
 const API_URL = "http://eulerity-hackathon.appspot.com/pets";
 
 function Pets() {
-    const [urls, setUrls] = useState([]);
-    const [dataList, setDataList] = useState();
-
     const pets = useSelector((state) => state.allPets.filteredPets);
+    const selectedPets = useSelector((state) => state.selectedPets);
+
     const dispatch = useDispatch();
 
     useEffect(() => {
         async function fetchData() {
             try {
                 const { data } = await axios.get(API_URL);
-                setDataList(data);
                 dispatch(setPets(data));
             } catch (error) {
+                dispatch(setPets([]));
                 console.log(error);
             }
         }
@@ -39,10 +43,37 @@ function Pets() {
     }, [dispatch]);
 
     function handleCheckbox(event) {
-        urls.push(event.target.value);
+        const key = event.target.value;
 
-        setUrls(urls);
-        console.log(urls);
+        if (!event.target.checked) {
+            dispatch(unselectPet(key));
+            return;
+        }
+
+        const url = event.target.getAttribute("data-url");
+        const title = event.target.getAttribute("data-title");
+
+        const selectedPet = {
+            key,
+            url,
+            title,
+        };
+
+        dispatch(selectPet(selectedPet));
+    }
+
+    function isChecked(petId) {
+        if (selectedPets.length < 1) {
+            return false;
+        }
+
+        for (const currentSelectedPet of selectedPets) {
+            if (currentSelectedPet.key === petId) {
+                return true;
+            }
+        }
+
+        return false;
     }
 
     return (
@@ -64,11 +95,22 @@ function Pets() {
                     pets.length > 0 &&
                     pets.map((currentPet, currentIndex) => (
                         <Card key={currentIndex}>
-                            <label htmlFor={`checkbox-${currentIndex}`}>
+                            <label
+                                htmlFor={`checkbox-${currentIndex}-${currentPet.url}`}
+                            >
                                 <Checkbox
-                                    id={`checkbox-${currentIndex}`}
-                                    value={currentPet.url}
+                                    id={`checkbox-${currentIndex}-${currentPet.url}`}
+                                    value={`checkbox-${currentIndex}-${currentPet.url}`}
+                                    data-url={currentPet.url}
+                                    data-title={currentPet.title}
                                     onChange={handleCheckbox}
+                                    checked={
+                                        isChecked(
+                                            `checkbox-${currentIndex}-${currentPet.url}`
+                                        )
+                                            ? "checked"
+                                            : ""
+                                    }
                                 />
 
                                 <ImageContainer>

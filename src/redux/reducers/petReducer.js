@@ -45,9 +45,11 @@ export const petReducer = (
 export const selectedPetsReducer = (state = [], { type, payload }) => {
     switch (type) {
         case ActionTypes.SELECT_PET:
-            return state;
+            return [...state, { ...payload.selectedPet }];
         case ActionTypes.UNSELECT_PET:
-            return state;
+            return state.filter(
+                (currentPet) => currentPet.key !== payload.petId
+            );
         default:
             return state;
     }

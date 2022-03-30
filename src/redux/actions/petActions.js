@@ -13,3 +13,17 @@ export const searchPets = (searchQuery) => {
         payload: { searchQuery: searchQuery },
     };
 };
+
+export const selectPet = (selectedPet) => {
+    return {
+        type: ActionTypes.SELECT_PET,
+        payload: { selectedPet: selectedPet },
+    };
+};
+
+export const unselectPet = (petId) => {
+    return {
+        type: ActionTypes.UNSELECT_PET,
+        payload: { petId: petId },
+    };
+};

@@ -3,7 +3,7 @@ import { petReducer, selectedPetsReducer } from "./petReducer";
 
 const reducers = combineReducers({
     allPets: petReducer,
-    pet: selectedPetsReducer,
+    selectedPets: selectedPetsReducer,
 });
 
 export default reducers;
