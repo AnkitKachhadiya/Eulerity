@@ -68,6 +68,8 @@ cd myfolder
 
 git clone https://github.com/AnkitKachhadiya/Eulerity.git
 
+cd Eulerity
+
 npm install
 
 npm start
