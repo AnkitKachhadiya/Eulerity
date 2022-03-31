@@ -1,5 +1,6 @@
 import { ThemeProvider } from "styled-components";
 import NavBar from "./components/NavBar";
+import Footer from "./components/Footer";
 import GlobalStyles from "./components/styles/Global";
 
 const theme = {
@@ -18,6 +19,7 @@ function App() {
         <ThemeProvider theme={theme}>
             <GlobalStyles />
             <NavBar />
+            <Footer />
         </ThemeProvider>
     );
 }

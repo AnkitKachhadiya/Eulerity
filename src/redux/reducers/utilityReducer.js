@@ -1,6 +1,6 @@
 import { ActionTypes } from "../constants/action-types";
 
-export const loadingReducer = (state = false, { type, payload }) => {
+export const loadingReducer = (state = false, { type }) => {
     switch (type) {
         case ActionTypes.LOADING_ON:
             return true;

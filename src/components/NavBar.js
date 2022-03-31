@@ -2,6 +2,7 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { Nav, StyledHeader, StyledLink } from "./styles/Header.styled";
 import About from "./About";
 import Pets from "./Pets";
+import PageNotFound from "./PageNotFound";
 
 function NavBar() {
     return (
@@ -17,7 +18,7 @@ function NavBar() {
             <Routes>
                 <Route exact path="/" element={<Pets />} />
                 <Route path="/about" element={<About />} />
-                <Route path="*">404 Not Found!</Route>
+                <Route path="*" element={<PageNotFound />}></Route>
             </Routes>
         </BrowserRouter>
     );

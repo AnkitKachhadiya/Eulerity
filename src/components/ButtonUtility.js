@@ -52,12 +52,16 @@ function ButtonUtility() {
         dispatch(loadingOn());
 
         var zip = new JSZip();
-        var zipFilename = "archive.zip";
+        var zipFilename = "Pets.zip";
 
         selectedPets.forEach(function (currentSelectedPet, index) {
-            zip.file(`${index}.jpeg`, urlToPromise(currentSelectedPet.url), {
-                base64: true,
-            });
+            zip.file(
+                `${currentSelectedPet.title}.jpeg`,
+                urlToPromise(currentSelectedPet.url),
+                {
+                    base64: true,
+                }
+            );
         });
 
         zip.generateAsync({ type: "blob" }).then(function (content) {

@@ -86,7 +86,7 @@ function Pets() {
     }
 
     return (
-        <Container className={loadingStatus ? "true" : "false"}>
+        <Container>
             {loadingStatus && <DownloadLoader />}
             <ButtonUtility />
             <SearchContainer>

@@ -54,3 +54,17 @@ export const ButtonContainer = styled.div`
     left: 10px;
     top: 15rem;
 `;
+
+export const ErrorContainer = styled.div`
+    h1 {
+        position: absolute;
+        top: 50%;
+        left: 25%;
+    }
+
+    img {
+        height: 100%;
+        width: 100%;
+        object-fit: contain;
+    }
+`;
