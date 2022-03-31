@@ -58,6 +58,11 @@
         files in our case zip file.
     </li>
 </ul>
+<p>
+    Used <a href="https://khan.github.io/tota11y/" target="_blank" rel="noreferrer" >
+        tota11y
+    </a> an accessibility visualization toolkit to improve the accessibility of the application.
+</p>
 
 ## Installation
 
