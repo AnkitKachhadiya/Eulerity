@@ -31,7 +31,7 @@ export const DownloadLoader = styled.div`
     width: 100%;
     height: 100%;
     background-color: #eceaea;
-    background-image: url("https://upload.wikimedia.org/wikipedia/commons/2/29/Loader.gif");
+    background-image: url("./Loader.gif");
     background-size: 500px;
     background-repeat: no-repeat;
     background-position: center;
