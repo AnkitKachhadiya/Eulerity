@@ -11,7 +11,6 @@ import {
     Container,
     PetContainer,
     SearchContainer,
-    ButtonContainer,
 } from "./styles/Container.styled";
 import {
     Card,
@@ -20,11 +19,9 @@ import {
     CardBody,
     Checkbox,
 } from "./styles/Card.styled";
-import { IconButton } from "./styles/IconButton.styled";
 
-import { saveAs } from "file-saver";
-import JSZip from "jszip";
-import JSZipUtils from "jszip-utils";
+import { Loader, DownloadLoader } from "./styles/Loader.styled";
+import ButtonUtility from "./ButtonUtility";
 
 const API_URL = "http://eulerity-hackathon.appspot.com/pets";
 
@@ -32,6 +29,7 @@ function Pets() {
     const pets = useSelector((state) => state.allPets.filteredPets);
     const allPets = useSelector((state) => state.allPets.pets);
     const selectedPets = useSelector((state) => state.selectedPets);
+    const loadingStatus = useSelector((state) => state.isLoading);
 
     const dispatch = useDispatch();
 
@@ -83,84 +81,14 @@ function Pets() {
         return false;
     }
 
-    function handleSelectAll() {
-        for (const currentPet of allPets) {
-            const petId = `checkbox-${currentPet.url}-${currentPet.title}-${currentPet.description}`;
-
-            if (!isChecked(petId)) {
-                const selectedPet = {
-                    key: petId,
-                    url: currentPet.url,
-                    title: currentPet.title,
-                };
-
-                dispatch(selectPet(selectedPet));
-            }
-        }
-    }
-    function handleUnselectAll() {
-        for (const currentPet of selectedPets) {
-            dispatch(unselectPet(currentPet.key));
-        }
-    }
-
-    function handleDownload() {
-        var zip = new JSZip();
-        var zipFilename = "archive.zip";
-
-        selectedPets.forEach(function (currentSelectedPet, index) {
-            zip.file(`${index}.jpeg`, urlToPromise(currentSelectedPet.url), {
-                base64: true,
-            });
-        });
-
-        zip.generateAsync({ type: "blob" }).then(function (content) {
-            saveAs(content, zipFilename);
-        });
-    }
-
-    function urlToPromise(url) {
-        return new Promise(function (resolve, reject) {
-            JSZipUtils.getBinaryContent(url, function (err, data) {
-                if (err) {
-                    reject(err);
-                } else {
-                    resolve(data);
-                }
-            });
-        });
-    }
-
-    if (!pets || pets.length < 1) {
-        return (
-            <div>
-                <h1>Loading...</h1>
-            </div>
-        );
+    if (!allPets || allPets.length < 1) {
+        return <Loader />;
     }
 
     return (
-        <Container>
-            <ButtonContainer>
-                <IconButton bg="#009688">
-                    <span>
-                        <img src="/select-all.png" alt="Select All" />
-                    </span>
-                    <span>Select All</span>
-                </IconButton>
-                <IconButton bg="#ff1744">
-                    <span>
-                        <img src="/clear-selection.png" alt="Clear Selection" />
-                    </span>
-                    <span>Clear Selection</span>
-                </IconButton>
-                <IconButton>
-                    <span>
-                        <img src="/download.png" alt="Download" />
-                    </span>
-                    <span>Download</span>
-                </IconButton>
-            </ButtonContainer>
+        <Container className={loadingStatus ? "true" : "false"}>
+            {loadingStatus && <DownloadLoader />}
+            <ButtonUtility />
             <SearchContainer>
                 <label htmlFor="search-pet" aria-label="Search pet"></label>
                 <input
