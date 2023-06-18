@@ -1,6 +1,6 @@
 # Coding Project
 
-<p>Coding task to build Pets project using React.js</p>
+<p>Pets project using React.js</p>
 <p>Requirements:</p>
 <ol>
     <li>Create the basic react app using create-react-app.</li>
